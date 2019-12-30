@@ -1,5 +1,7 @@
 import React from "react";
 import HomePage from "./pages/homepage/homepage.component";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "./redux/user/user.selectors";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
@@ -12,6 +14,7 @@ import {
   auth,
   createUserProfileDocument
 } from "../src/firebase/firebase.utils";
+import CheckOutPage from "./pages/checkout/checkout.component";
 
 class App extends React.Component {
   //usa esta variable para cerrar la sesion...
@@ -41,6 +44,7 @@ class App extends React.Component {
   }
 
   handleRedirect = () => {
+    console.log("Estoy justo aqui ");
     return this.props.currentUser ? (
       <Redirect to="/" />
     ) : (
@@ -55,6 +59,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
+          <Route exact path="/checkout" component={CheckOutPage} />
           <Route exact path="/signin" render={this.handleRedirect} />
         </Switch>
       </div>
@@ -66,11 +71,8 @@ const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
