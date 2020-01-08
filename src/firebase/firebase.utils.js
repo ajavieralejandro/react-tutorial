@@ -40,6 +40,23 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+//Insercion en la base de datos
+/*
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = firestore.collection(collectionKey);
+  //Asegura que las inserciones en la base de datos sean completas
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const docRef = collectionRef.doc();
+    batch.set(docRef, obj);
+  });
+  return await batch.commit();
+};
+*/
+
 firebase.initializeApp(config);
 export const auth = firebase.auth();
 //Sign in with google...

@@ -9,6 +9,9 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 
+//Firebase
+import { selectToArray } from "./redux/shop/shop.selectors";
+
 import "./App.css";
 import {
   auth,
@@ -21,7 +24,7 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, collectionsArray } = this.props;
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -36,6 +39,11 @@ class App extends React.Component {
       }
 
       setCurrentUser(userAuth);
+      //Insercion en la base de datos...
+      /*addCollectionAndDocuments(
+        "collections",
+        collectionsArray.map(({ title, items }) => ({ title, items }))
+      );*/
     });
   }
 
@@ -72,7 +80,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectToArray
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
