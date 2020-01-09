@@ -57,6 +57,28 @@ export const addCollectionAndDocuments = async (
 };
 */
 
+export const convertCollectionsSnapshotToMap= (collections)=>{
+  
+  const TransformedCollection = collections.docs.map(
+    doc => {
+      const {title,items} = doc.data();
+      return {
+        routeName : encodeURI(title.toLowerCase()),
+        id : doc.id,
+        title,
+        items
+      }
+    }
+  )
+
+  return TransformedCollection.reduce((acumulator,collection)=>{
+    acumulator[collection.title.toLowerCase()]=collection;
+      return acumulator;
+  },{});
+
+
+}
+
 firebase.initializeApp(config);
 export const auth = firebase.auth();
 //Sign in with google...

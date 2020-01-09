@@ -3,9 +3,8 @@ import { createSelector } from "reselect";
 const selectShop = state => state.shop;
 
 export const selectCollection = collectionUrlParam =>
-  createSelector([selectCollections], collections => {
-    return collections[collectionUrlParam];
-  });
+  createSelector([selectCollections], collections => 
+    collections? collections[collectionUrlParam]:null)
 
 export const selectCollections = createSelector(
   [selectShop],
@@ -13,5 +12,6 @@ export const selectCollections = createSelector(
 );
 
 export const selectToArray = createSelector([selectCollections], collections =>
-  Object.keys(collections).map(key => collections[key])
+  collections ?
+  Object.keys(collections).map(key => collections[key]) : []
 );
