@@ -25,7 +25,7 @@ class App extends React.Component {
 
   componentDidMount() {
     const { setCurrentUser, collectionsArray } = this.props;
-
+    /*
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -37,14 +37,15 @@ class App extends React.Component {
           });
         });
       }
+      
 
       setCurrentUser(userAuth);
       //Insercion en la base de datos...
       /*addCollectionAndDocuments(
         "collections",
         collectionsArray.map(({ title, items }) => ({ title, items }))
-      );*/
-    });
+      );
+    });*/
   }
 
   componentWillUnmount() {
