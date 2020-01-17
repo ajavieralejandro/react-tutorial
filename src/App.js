@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import {checkUserSession } from "./redux/user/user.actions";
 //proob comment
 //Firebase
 import { selectToArray } from "./redux/shop/shop.selectors";
@@ -23,27 +24,11 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    /*
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });
-        });
-      }
-      
-
-      setCurrentUser(userAuth);
-      //Insercion en la base de datos...
-      /*addCollectionAndDocuments(
-        "collections",
-        collectionsArray.map(({ title, items }) => ({ title, items }))
-      );
-    });*/
+    console.log("Me estoy fijando que esta pasando");
+    const {checkUserSession} = this.props;
+    const aux = checkUserSession();
+    console.log("vino : ",aux);
+ 
   }
 
   componentWillUnmount() {
@@ -81,4 +66,8 @@ const mapStateToProps = createStructuredSelector({
   collectionsArray: selectToArray
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  checkUserSession : () => dispatch(checkUserSession())
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
