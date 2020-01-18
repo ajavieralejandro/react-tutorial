@@ -65,21 +65,16 @@ export function* signInWithEmail({payload : {email,password}}){
 
 export function* signUp({payload :{ displayName, email, password, confirmPassword }}){
     try{
-        
-        if(password !== confirmPassword){
-            alert("Passwords doesn't match");
-            yield(put(signUpFailure("Passwords doesn't match.")))
-        }
-        else {
-
-            const { user } =  auth.createUserWithEmailAndPassword(
+ 
+        const  {user}  = yield  auth.createUserWithEmailAndPassword(
                 email,
                 password
               );
-              yield put(signUpSuccess(user));
+            const userToIns =  yield createUserProfileDocument(user, { displayName });
+            yield put(signInSuccess(userToIns));
         }
 
-    }
+    
     catch(error){
         yield(put(signUpFailure(error)))
 

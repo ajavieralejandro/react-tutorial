@@ -22,20 +22,19 @@ class SignUp extends React.Component {
     const { displayName, email, password, confirmPassword } = this.state;
     const user = {displayName,email,password,confirmPassword};
     const {signUpStart} = this.props;
-    signUpStart(user);
-    
-    /*
     if (password !== confirmPassword) {
       alert("passwords don't match");
       return;
     }
+    signUpStart(user);
+    
+    /*
 
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
-      createUserProfileDocument(user, { displayName });
       //vuelvo a los valores por defecto, no estoy muy seguro para que es esto...
       this.setState({
         displayName: "",
