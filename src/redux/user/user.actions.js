@@ -12,13 +12,15 @@ export const emailSignInStart = (emailAndPassword) => ({
   payload : emailAndPassword
 })
 
+
+
 export const signInSuccess = (user) => {
-  console.log("todo marcha bien");
+  //console.log("todo marcha bien");
   const toR = {
   type : UserActionTypes.SIGN_IN_SUCCESS,
   payload : user,
   }
-  console.log("despacho : ",toR);
+  //console.log("despacho : ",toR);
   return toR;
 }
 
@@ -44,6 +46,22 @@ export const checkUserSession = () => ({
 export const signOutStart = () =>({
   type : UserActionTypes.SIGN_OUT_START
 })
+
+export const signUpStart = (user) =>({
+  type : UserActionTypes.SIGNUP_START,
+  payload : user
+})
+
+export const signUpFailure = (error) => ({
+  type : UserActionTypes.SIGN_UP_FAILURE,
+  payload : error
+})
+
+export const signUpSuccess = (user)=>({
+  type : UserActionTypes.SIGN_IN_SUCCESS,
+  payload : user
+})
+
 
 
 

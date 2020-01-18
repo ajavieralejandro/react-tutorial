@@ -1,8 +1,8 @@
 import React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import {googleSignInStart,emailSignInStart} from "../../redux/user/user.actions";
-import {connect} from 'react-redux'
+import {googleSignInStart,emailSignInStart,proob} from "../../redux/user/user.actions";
+import { connect } from "react-redux";
 import "./sign-in.styles.scss";
 
 class SignIn extends React.Component {
@@ -19,6 +19,7 @@ class SignIn extends React.Component {
     //extraigo el valor y el nombr
     const { value, name } = event.target;
     this.setState({ [name]: value });
+    
   };
 
   handleSubmit = async event => {

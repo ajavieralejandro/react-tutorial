@@ -1,6 +1,6 @@
 import {takeLatest, put, all, call} from "redux-saga/effects";
 import UserActionTypes from "./user.types";
-import {signInSuccess,signInFailure, signOutFailure, signOutSuccess} from "./user.actions";
+import {signInSuccess,signInFailure, signOutFailure, signOutSuccess, signUpSuccess, signUpFailure} from "./user.actions";
 import {auth, googleProvider, createUserProfileDocument,getCurrentUser} from "../../firebase/firebase.utils";
 
 export function* getSnapshotFromUserAuth(userAuth){
@@ -63,6 +63,29 @@ export function* signInWithEmail({payload : {email,password}}){
     }
 }
 
+export function* signUp({payload :{ displayName, email, password, confirmPassword }}){
+    try{
+        
+        if(password !== confirmPassword){
+            alert("Passwords doesn't match");
+            yield(put(signUpFailure("Passwords doesn't match.")))
+        }
+        else {
+
+            const { user } =  auth.createUserWithEmailAndPassword(
+                email,
+                password
+              );
+              yield put(signUpSuccess(user));
+        }
+
+    }
+    catch(error){
+        yield(put(signUpFailure(error)))
+
+    }
+}
+
 export function* signOut(){
     console.log("Estoy viendo como estoy...");
     try{
@@ -89,8 +112,15 @@ export function* onEmailSignInStart(){
     yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START,signInWithEmail)
 }
 
+export function* onSingUpStart(){
+    console.log("me LLAMO");
+    yield takeLatest(UserActionTypes.SIGNUP_START,signUp);
+}
+
+
 export function* userSagas() {
+    
     yield all([
-      call(onGoogleSignInStart),call(onCheckUserSession),call(onSignOutStart)
+      call(onGoogleSignInStart),call(onCheckUserSession),call(onSignOutStart),call(onEmailSignInStart),call(onSingUpStart)
     ]);
   }

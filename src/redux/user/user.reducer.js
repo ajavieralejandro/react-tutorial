@@ -1,5 +1,6 @@
 import "./user.types";
 import UserActionTypes  from "./user.types";
+import { statement } from "@babel/template";
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -35,6 +36,18 @@ const userReducer = (state = INITIAL_STATE, action) => {
         return{
           ...state,
           error : action.payload
+        }
+
+        case UserActionTypes.SIGN_UP_FAILURE : 
+        return {
+          ...state,
+          error : action.payload
+        }
+
+        case UserActionTypes.SIGN_UP_SUCCESS : 
+        return {
+          ...state,
+          currentUser : action.payload
         }
 
       
