@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useEffect} from "react";
 import HomePage from "./pages/homepage/homepage.component";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selectors";
@@ -13,38 +13,26 @@ import {checkUserSession } from "./redux/user/user.actions";
 import { selectToArray } from "./redux/shop/shop.selectors";
 
 import "./App.css";
-import {
-  auth,
-  createUserProfileDocument
-} from "../src/firebase/firebase.utils";
 import CheckOutPage from "./pages/checkout/checkout.component";
 
-class App extends React.Component {
-  //usa esta variable para cerrar la sesion...
-  unsubscribeFromAuth = null;
+//Solo lo ejecuta una ves
+const App = ({checkUserSession,currentUser}) =>  {
 
-  componentDidMount() {
-    console.log("Me estoy fijando que esta pasando");
-    const {checkUserSession} = this.props;
-    const aux = checkUserSession();
-    console.log("vino : ",aux);
+  useEffect( () => {
+    checkUserSession();
+
+  },[checkUserSession])
+
+  const handleRedirect = () => {
  
-  }
-
-  componentWillUnmount() {
-    //this.unsubscribeFromAuth();
-  }
-
-  handleRedirect = () => {
-    console.log("Estoy justo aqui ");
-    return this.props.currentUser ? (
+    return currentUser ? (
       <Redirect to="/" />
     ) : (
       <SignInAndSignUpPage />
     );
   };
 
-  render() {
+  
     return (
       <div>
         <Header />
@@ -52,18 +40,19 @@ class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
           <Route exact path="/checkout" component={CheckOutPage} />
-          <Route exact path="/signin" render={this.handleRedirect} />
+          <Route exact path="/signin" render={handleRedirect} />
         </Switch>
       </div>
     );
+
+
   }
-}
+
 
 
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-  collectionsArray: selectToArray
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({
