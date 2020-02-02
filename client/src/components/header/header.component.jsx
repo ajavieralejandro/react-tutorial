@@ -30,7 +30,7 @@ const Header = ({ currentUser, cartHidden,signOut }) => (
       ) : (
         <OptionLink to="/signin">SIGN IN</OptionLink>
       )}
-      {currentUser ? <CartIcon /> : null}
+      <CartIcon /> 
     </OptionsContainer>
     {cartHidden ? null : <CartDropdown />}
   </HeaderContainer>

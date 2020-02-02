@@ -27,7 +27,11 @@
   }
 
   &.large {
-    height: 380px;
+    @media only screen and (min-width: 800px){
+    
+      height: 380px;
+      
+    }
   }
 
   &:first-child {
@@ -73,4 +77,14 @@
       font-size: 16px;
     }
   }
+
+  @media only screen and (max-width: 800px){
+    
+    height: 200px;
+    
+  }
+
+  
 }
+
+
