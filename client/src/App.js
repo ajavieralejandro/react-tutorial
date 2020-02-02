@@ -10,9 +10,8 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up
 import {checkUserSession } from "./redux/user/user.actions";
 //proob comment
 //Firebase
-import { selectToArray } from "./redux/shop/shop.selectors";
 
-import "./App.css";
+import {GlobalStyle} from "./global.styles";
 import CheckOutPage from "./pages/checkout/checkout.component";
 
 //Solo lo ejecuta una ves
@@ -35,6 +34,7 @@ const App = ({checkUserSession,currentUser}) =>  {
   
     return (
       <div>
+      <GlobalStyle />
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
