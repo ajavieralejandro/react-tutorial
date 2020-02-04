@@ -4,6 +4,7 @@ import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 import Header from "./components/header/header.component";
 import {checkUserSession } from "./redux/user/user.actions";
 //proob comment
@@ -41,11 +42,13 @@ const App = ({checkUserSession,currentUser}) =>  {
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Suspense fallback={<div>...Loading</div>}>
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={CheckOutPage} />
-          <Route exact path="/signin" render={handleRedirect} />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<div>...Loading</div>}>
+            <Route path="/shop" component={ShopPage} />
+            <Route exact path="/checkout" component={CheckOutPage} />
+            <Route exact path="/signin" render={handleRedirect} />
+            </Suspense>
+          </ErrorBoundary>
         </Switch>
       </div>
     );
