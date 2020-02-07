@@ -15,4 +15,4 @@ const CardItem = ({ item: { imageUrl, price, name, quantity } }) => {
   );
 };
 
-export default CardItem;
+export default React.memo(CardItem);
