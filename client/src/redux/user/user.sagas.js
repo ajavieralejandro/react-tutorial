@@ -1,16 +1,16 @@
 import {takeLatest, put, all, call} from "redux-saga/effects";
 import UserActionTypes from "./user.types";
 import {signInSuccess,signInFailure, signOutFailure, signOutSuccess, signUpSuccess, signUpFailure} from "./user.actions";
-import {auth, googleProvider, createUserProfileDocument,getCurrentUser} from "../../firebase/firebase.utils";
+import {auth, googleProvider, createUserProfileDocument,getCurrentUser,addCart} from "../../firebase/firebase.utils";
 
 export function* getSnapshotFromUserAuth(userAuth){
  
     try{
-        yield console.log("voy a llamar al metodo con :",userAuth);
+        //yield console.log("voy a llamar al metodo con :",userAuth);
         const userRef = yield call(createUserProfileDocument,userAuth);
-        yield console.log("Aparentemente todo salio como esperamos...");
+        //yield console.log("Aparentemente todo salio como esperamos...");
         const userSnapshot = yield userRef.get();
-        console.log("Ahora todo se desmadra");
+        //console.log("Ahora todo se desmadra");
         yield put(signInSuccess({id : userSnapshot.id,...userSnapshot.data}));
     }
     catch(error){
@@ -35,6 +35,7 @@ export function* isUserAthenticated(){
 }
 
 export function* onCheckUserSession(){
+    yield addCart();
     yield takeLatest(UserActionTypes.CHECK_USER_SESSION,isUserAthenticated)
 
 }

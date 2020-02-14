@@ -22,6 +22,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   const snapShot = await userRef.get();
 
+  console.log("El snapShot que estoy recibiendo es : ",snapShot);
+
   if (!snapShot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -99,5 +101,40 @@ export const getCurrentUser = () => {
     }, reject);
   });
 };
+
+export const addCart = async () =>{
+  //Arreglo de usuarios
+  let usersArray = [];
+  const array2 = [];
+  //De esta manera recorro los usuarios en la coleccioón 
+  await firestore.collection('users')
+  .get()
+  .then(function(querySnapshot){
+    usersArray = querySnapshot.docs;
+  });
+
+  writeUserData(usersArray);
+  //console.log("el resultado del script es : ",aux);
+
+}
+
+async function writeUserData(objectsToAdd){
+  const collectionRef = firestore.collection("carts");
+  const batch = firestore.batch();
+
+
+  objectsToAdd.forEach(obj =>{
+    //console.log("Estoy queriendo insertar ",obj);
+    const newDocRef = collectionRef.doc(obj.id);
+    const toIns = {id:obj.id, cart: null};
+    batch.set(newDocRef,toIns);
+  });
+  await batch.commit().then(result => {
+    console.log('Transaction success!');
+  }).catch(err => {
+    console.log('Transaction failure:', err);
+  });
+}
+
 
 export default firebase;
