@@ -1,4 +1,5 @@
 import UserActionTypes from "./user.types";
+import CartActionTypes from "../cart/cart.types";
 
 
 export const googleSignInStart = () => (
@@ -60,6 +61,11 @@ export const signUpFailure = (error) => ({
 export const signUpSuccess = (user)=>({
   type : UserActionTypes.SIGN_IN_SUCCESS,
   payload : user
+})
+
+export const saveCart = (userId) =>({
+  type : CartActionTypes.SAVE_CART_ITEMS,
+  payload : userId
 })
 
 

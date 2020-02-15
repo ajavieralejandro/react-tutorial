@@ -2,7 +2,10 @@ import {takeLatest, put, all, call} from "redux-saga/effects";
 import UserActionTypes from "./user.types";
 import {signInSuccess,signInFailure, signOutFailure, signOutSuccess, signUpSuccess, signUpFailure} from "./user.actions";
 import {auth, googleProvider, createUserProfileDocument,getCurrentUser,addCart} from "../../firebase/firebase.utils";
-
+import {getCartFromFirebase} from '../cart/cart.actions';
+import { saveCart } from "../cart/cart.actions";
+import {select} from 'redux-saga/effects';
+import * as selectors from './user.selectors';
 export function* getSnapshotFromUserAuth(userAuth){
  
     try{
@@ -12,6 +15,9 @@ export function* getSnapshotFromUserAuth(userAuth){
         const userSnapshot = yield userRef.get();
         //console.log("Ahora todo se desmadra");
         yield put(signInSuccess({id : userSnapshot.id,...userSnapshot.data}));
+        yield put(getCartFromFirebase(userSnapshot.id));
+        
+        
     }
     catch(error){
         yield put(signInFailure(error))
@@ -35,7 +41,6 @@ export function* isUserAthenticated(){
 }
 
 export function* onCheckUserSession(){
-    yield addCart();
     yield takeLatest(UserActionTypes.CHECK_USER_SESSION,isUserAthenticated)
 
 }
@@ -66,7 +71,7 @@ export function* signInWithEmail({payload : {email,password}}){
     }
 }
 
-export function* signUp({payload :{ displayName, email, password, confirmPassword }}){
+export function* signUp({payload :{ displayName, email, password}}){
     try{
  
         const  {user}  = yield  auth.createUserWithEmailAndPassword(
@@ -86,8 +91,12 @@ export function* signUp({payload :{ displayName, email, password, confirmPasswor
 
 export function* signOut(){
     console.log("Estoy viendo como estoy...");
+    const user = yield select(selectors.selectUser);
+    const userId = user.currentUser.id;
+    yield put(saveCart(userId));
     try{
-        
+        //ANTES TENGO QUE VER SI PUEDO GRABAR LO QUE HAY EN EL CARRITO DE COMPRAS
+       
         yield auth.signOut();
         console.log("por ahora voy bien");
         yield put(signOutSuccess());

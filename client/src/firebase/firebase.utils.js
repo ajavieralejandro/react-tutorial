@@ -102,6 +102,7 @@ export const getCurrentUser = () => {
   });
 };
 
+//Crea la coleccion cart en la base de datos de firebase llamando a writeUserData
 export const addCart = async () =>{
   //Arreglo de usuarios
   let usersArray = [];
@@ -126,7 +127,7 @@ async function writeUserData(objectsToAdd){
   objectsToAdd.forEach(obj =>{
     //console.log("Estoy queriendo insertar ",obj);
     const newDocRef = collectionRef.doc(obj.id);
-    const toIns = {id:obj.id, cart: null};
+    const toIns = {id:obj.id, cart:[]};
     batch.set(newDocRef,toIns);
   });
   await batch.commit().then(result => {
@@ -134,6 +135,24 @@ async function writeUserData(objectsToAdd){
   }).catch(err => {
     console.log('Transaction failure:', err);
   });
+}
+
+export const getUserCart = async (userId) =>{
+  //addCart();
+  let toR = null;
+  console.log("Empiezo la operacion en firebase...");
+  const userCart = await firestore.collection("carts").doc(userId);
+  let getDoc =  await userCart.get()
+  .then(response => toR =  response.data())
+  .catch(error => console.log("Error : ",error));
+  console.log("Termine la operacion dentro de firebase...");
+  return toR;
+}
+
+export const writeUserCart = async(userId,cart) =>{
+  firestore.collection("carts").doc(userId).set(cart)
+  .then(response => console.log("El objeto fue correctamente agregado a la base de datos..."))
+  .catch(error => console.log("No se pudo insertar el objeto en la base de datos : ",error));
 }
 
 
